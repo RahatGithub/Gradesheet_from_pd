@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <style>
+        li {
+            cursor: pointer;
+        }
+        li:hover {
+            color:brown;
+            font-weight: bold;
+        }
+    </style>
+    <body>
+        <h2>Upload</h2>
+        <form method = "post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" multiple name="document"/>
+            <button type="submit">Upload</button> 
+            <br><br>
+            <label>Session</label>
+            <input type="text" name="session"/>
+        </form>
+        {% if ok %}
+            {% for i in data %}
+                <li class = 'btn' reg = "{{ i }}" style = "cursor:pointer, "> {{ i }}</li>
+            {% endfor %}
+        {% endif %}
+        
+
+        <p id="demo"></p>
+
+        <script>
+            let buttons = document.querySelectorAll(".btn");
+            buttons.forEach((btn, index) => {
+                btn.addEventListener("click", function(e) {
+                    let reg_no = e.target.attributes.reg.value;
+                    console.log(reg_no)
+                });
+            })
+
+
+            if ( window.history.replaceState ) {
+                window.history.replaceState( null, null, window.location.href );
+            }
+
+        </script>
+    </body>
+</html>
