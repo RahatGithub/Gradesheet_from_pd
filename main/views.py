@@ -29,10 +29,10 @@ def upload(request):
             
             for std in range(0, df.shape[0]):
                 student = {}
-                a_student = list(df.iloc[std])
+                a_student = list(df.iloc[std])  # taking the whole row as a student
                 course = []
                 obtained = []
-                for i in range(2, len(a_student)):
+                for i in range(2, len(a_student)):  # playing with data after 'regi no' and 'name', so range starts from 2
                     if (str(a_student[i]) != 'nan'):
                         if i < len(a_student) - 2:
                             course.append(str(cols[i]))
@@ -65,17 +65,14 @@ def upload(request):
         context['data'] = dic
         # print(dic)
         for student,info in dic.items():
+            reg_no = student 
+            name = info['name']
             session=request.POST['session']
-            # GradeSheet.objects.create(reg_no=student,
-            #                           name=student.name,
-            #                           session=session,
-            #                           )
+            # courses = info['course']
             
-            print(session)
-            print(student)
-            print(info['name'])
-            print(info)
-            # print(dic['course']) #??????????
+            print(name, info)
+            
+        return render(request, 'main/batch_view.html', {'data':dic})
             
     return render(request, 'main/upload.html', context)
 

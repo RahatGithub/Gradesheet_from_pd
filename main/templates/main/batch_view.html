@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <style>
+        li {
+            cursor: pointer;
+        }
+        li:hover {
+            color:brown;
+            font-weight: bold;
+        }
+    </style>
+    <body>
+        <h2>batch view</h2>
+
+        <ul>
+            {% for student in data %}
+            <li>
+                {{student}}
+                <a href="#"> <button>Download</button> </a> <a href="#"> <button>View</button> </a>
+            </li> 
+            <br>
+            {% endfor %}
+        </ul>
+
+    </body>
+</html>
