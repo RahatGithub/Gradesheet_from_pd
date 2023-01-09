@@ -29,10 +29,10 @@ def upload(request):
             
             for std in range(0, df.shape[0]):
                 student = {}
-                a_student = list(df.iloc[std])  # taking the whole row as a student
+                a_student = list(df.iloc[std])
                 course = []
                 obtained = []
-                for i in range(2, len(a_student)):  # playing with data after 'regi no' and 'name', so range starts from 2
+                for i in range(2, len(a_student)):
                     if (str(a_student[i]) != 'nan'):
                         if i < len(a_student) - 2:
                             course.append(str(cols[i]))
@@ -49,28 +49,31 @@ def upload(request):
         dic = {}
         for i in range(0, len(students)):
             if str(students[i]['regi']) not in dic:
-                # print('nai')
+                print('nai')
                 std = {}
                 std['name'] = str(students[i]['name'])
+                std['results'] = []
                 for j in range(0, len(students)):
                     if str(students[j]['regi']) == str(students[i]['regi']):
-                        grd = {}
-                        grd['course'] = str(students[j]['course'])
-                        grd['obtained'] = str(students[j]['obtained'])
-                        std[str(students[j]['semester'])] = grd
+                        course = students[j]['course']
+                        obtained = students[j]['obtained']
+                        one_sem = []
+                        for k in range(0, len(course)):
+                            cnct = course[k] + '-' + obtained[k]
+                            splited = cnct.split('-')
+                            nice = []
+                            nice.append(splited[0] + '-' + splited[1])
+                            nice.append(splited[3])
+                            nice.append(splited[2])
+                            nice.append(splited[4])
+                            print(nice)
+                            one_sem.append(nice)
+                        std['results'].append(one_sem)
                 dic[str(students[i]['regi'])] = std
             else:
-                # print('ache')
-                pass
+                print('ache')
         context['data'] = dic
         # print(dic)
-        for student,info in dic.items():
-            reg_no = student 
-            name = info['name']
-            session=request.POST['session']
-            # courses = info['course']
-            
-            print(name, info)
             
         return render(request, 'main/batch_view.html', {'data':dic})
             
