@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 from django.views.generic import TemplateView
 from django.core.files.storage import FileSystemStorage
 from django.core.files.storage import default_storage
@@ -70,8 +71,6 @@ def upload(request):
                             one_sem.append(nice)
                         std['results'].append(one_sem)
                 dic[str(students[i]['regi'])] = std
-
-        # context['data'] = dic
         
         institute = request.POST['institute']
         department = request.POST['department']
@@ -87,31 +86,95 @@ def upload(request):
                                       department=department,
                                       session=session,
                                       results=results )
+        students = []
+        try:
+            gradesheets = GradeSheet.objects.filter(institute=institute, department=department, session=session)
+            for gs in gradesheets:
+                students.append([gs.reg_no, gs.name])
+        except:
+            pass
             
-            
-        return render(request, 'main/batch_view.html', {'data':dic})
+        context = {'students':students, 'institute':institute, 'department':department, 'session':session}
+        
+        return render(request, 'main/batch_view.html', context)
     
     # Dividing the gradesheets into categories based on <institute, department, session>
     gradesheet_category_obj = GradeSheet.objects.values('institute', 'department', 'session')
     gradesheet_categories = list()
     for gs_dict in gradesheet_category_obj:
-        li = [gs_dict['institute'], gs_dict['department'], gs_dict['session']]
+        gradesheets = GradeSheet.objects.filter(institute=gs_dict['institute'], department=gs_dict['department'], session=gs_dict['session'])
+        num_of_gs = len(gradesheets)
+        li = [gs_dict['institute'], gs_dict['department'], gs_dict['session'], num_of_gs]        
         if li not in gradesheet_categories:
             gradesheet_categories.append(li)
-      
-    # prev_gs = []
-    # for gs_col in gradesheet_collection:
-    #     try:
-    #         gradesheets = GradeSheet.objects.filter(institute=gs_col[0], 
-    #                                     department=gs_col[1],
-    #                                     session=gs_col[2])
-    #         for gradesheet in gradesheets:
-    #             prev_gs.append(gradesheet)
-    #     except:
-    #         pass
-    
-    # for gs in prev_gs: print(gs)
-
-    # for gs_col in gradesheet_collection: print(gs_col)
     
     return render(request, 'main/upload.html', {'gradesheet_categories':gradesheet_categories})
+
+
+
+def batch_view(request, institute, department, session):
+    students = []
+    try:
+        gradesheets = GradeSheet.objects.filter(institute=institute, department=department, session=session)
+        for gs in gradesheets:
+            students.append([gs.reg_no, gs.name])
+    except:
+        pass
+        
+    context = {'students':students, 'institute':institute, 'department':department, 'session':session}
+    
+    return render(request, 'main/batch_view.html', context)
+
+
+def test(request, institute, department, session, reg_no):    
+    institute = institute.replace("_", " ")    # replacing all '_' with <space>
+    department = department.replace("_", " ")  # replacing all '_' with <space>
+    session = session.replace("_", " ")        # replacing all '_' with <space>
+    student_record = GradeSheet.objects.get(institute=institute, department=department, session=session, reg_no=reg_no)
+    results = json.loads(student_record.results)
+    name = student_record.name
+    
+    gradesheet = list()
+    cumulative_credits, cumulative_point = float(0), float(0)   # for the overall result of all semesters
+    for semester_result in results:
+        a_semester = dict()
+        this_semester_credits, this_semester_point = float(0), float(0)   # for only a particular semester
+        course_results = list()
+        for cour in semester_result:
+            GP = float(cour[3])
+            LG = calculate_LG(GP)
+            cour.append(LG)
+            if GP >= 2:            # checking if the obtained GP >= 2 
+                this_semester_credits += float(cour[2])  # cumulative_credits += course_credits
+                this_semester_point += GP * float(cour[2])  # cumulative_point += GP * course_credits 
+            course_results.append(cour) 
+            
+        a_semester['course_results'] = course_results
+        a_semester['this_semester_credits'] = this_semester_credits
+        this_semester_GP = round((this_semester_point/this_semester_credits), 2)
+        a_semester['this_semester_GP'] = this_semester_GP
+        a_semester['this_semester_LG'] = calculate_LG(this_semester_GP)
+        cumulative_credits += this_semester_credits
+        a_semester['cumulative_credits'] = cumulative_credits
+        cumulative_point += this_semester_point
+        cumulative_GP = round((cumulative_point/cumulative_credits), 2)
+        a_semester['cumulative_GP'] = cumulative_GP
+        a_semester['cumulative_LG'] = calculate_LG(cumulative_GP)
+        
+        gradesheet.append(a_semester)
+            
+    return render(request, 'main/gradesheet_view.html', {'session':session, 'reg_no':reg_no, 'student_name':name, 'gradesheet':gradesheet})
+
+
+def calculate_LG(GP):
+    if GP == 4.00 : LG = "A+"
+    elif GP >= 3.75 : LG = "A"
+    elif GP >= 3.50 : LG = "A-" 
+    elif GP >= 3.25 : LG = "B+"
+    elif GP >= 3.00 : LG = "B"
+    elif GP >= 2.75 : LG = "B-"
+    elif GP >= 2.50 : LG = "C+"
+    elif GP >= 2.25 : LG = "C"
+    elif GP >= 2.00 : LG = "C-" 
+    else: LG = "F"
+    return LG 

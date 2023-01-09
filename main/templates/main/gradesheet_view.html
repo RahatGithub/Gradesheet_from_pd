@@ -1,0 +1,150 @@
+{% extends 'main/base.html' %}
+
+{% block title %} Grade sheet: {{student_name}}  {% endblock %}
+
+
+{% block body %}
+
+<!-- ********* Top section starts ********** -->
+<section class="top-section d-flex justify-content-between mx-5">
+    <div class="information">
+        <h2>Grade Certificate</h2>
+        <h4>B.Sc.(Engg.) Examination</h4>
+        <h4>Session: {{session}}</h4>
+        <h4>Name of the College: Sylhet Engineering College, Sylhet</h4>
+        <h4>Department: Computer Science & Engineering</h4>
+        <h4>Registration No.: {{reg_no}}</h4>
+        <h4>Name of the Student: {{name}}</h4>
+    </div>
+    
+    <div class="CGPA_calculation">
+        <table class="">
+            <thead>
+              <tr>
+                <th scope="col">Numerical Grade</th>
+                <th scope="col">Letter Grade</th>
+                <th scope="col">Grade Point</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>80% or above</td>
+                <td>A+</td>
+                <td>4.00</td>
+              </tr>
+              <tr>
+                <td>75% to less than 80%</td>
+                <td>A</td>
+                <td>3.75</td>
+              </tr>
+              <tr>
+                <td>70% to less than 75%</td>
+                <td>A-</td>
+                <td>3.50</td>
+              </tr>
+              <tr>
+                <td>65% to less than 70%</td>
+                <td>B+</td>
+                <td>3.25</td>
+              </tr>
+              <tr>
+                <td>60% to less than 65%</td>
+                <td>B</td>
+                <td>3.00</td>
+              </tr>
+              <tr>
+                <td>55% to less than 60%</td>
+                <td>B-</td>
+                <td>2.75</td>
+              </tr>
+              <tr>
+                <td>50% to less than 55%</td>
+                <td>C+</td>
+                <td>2.50</td>
+              </tr>
+              <tr>
+                <td>45% to less than 50%</td>
+                <td>C</td>
+                <td>2.25</td>
+              </tr>
+              <tr>
+                <td>40% to less than 45%</td>
+                <td>C-</td>
+                <td>2.00</td>
+              </tr>
+              <tr>
+                <td>less than 40%</td>
+                <td>F</td>
+                <td>0.00</td>
+              </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+<!-- ********* Top section ends ********** -->
+
+<section class="m-5">
+{% for a_semester in gradesheet %}
+
+{% if forloop.counter is 1 %}
+<h4>First Year First Semester</h4>
+{% elif forloop.counter is 2 %}
+<h4>First Year Second Semester</h4>
+{% elif forloop.counter is 3 %}
+<h4>Second Year First Semester</h4>
+{% elif forloop.counter is 4 %}
+<h4>Second Year Second Semester</h4>
+{% elif forloop.counter is 5 %}
+<h4>Third Year First Semester</h4>
+{% elif forloop.counter is 6 %}
+<h4>Third Year Second Semester</h4>
+{% elif forloop.counter is 7 %}
+<h4>Fourth Year First Semester</h4>
+{% elif forloop.counter is 8 %}
+<h4>Fourth Year Second Semester</h4>
+{% endif %}
+
+<table class="table table-bordered mb-5">
+		<thead>
+				<th>Course code</th>
+				<th>Course title</th>
+				<th>Credit</th>
+				<th>Grade point</th>
+				<th>Letter grade</th>
+		</thead>
+
+		<tbody>
+		{% for course_info in a_semester.course_results %}
+		<tr>
+				<td>{{course_info.0}}</td>
+				<td>{{course_info.1}}</td>
+				<td>{{course_info.2}}</td>
+				<td>{{course_info.3}}</td>
+				<td>{{course_info.4}}</td>
+		</tr>
+		{% endfor %}
+
+    <tr>
+        <td colspan="2" class="text-right"><b>This Semester Total:</b></td>
+        <td>{{a_semester.this_semester_credits}}</td>
+        <td>{{a_semester.this_semester_GP}}</td>
+        <td>{{a_semester.this_semester_LG}}</td>
+    </tr>
+		<tr>
+        <td colspan="2" class="text-right"><b>Cumulative:</b></td>
+        <td>{{a_semester.cumulative_credits}}</td>
+        <td>{{a_semester.cumulative_GP}}</td>
+        <td>{{a_semester.cumulative_LG}}</td>
+    </tr>
+
+  </tbody>
+</table>				
+{% endfor %} 
+
+</section>
+
+
+
+		
+
+{% endblock %}
