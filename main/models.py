@@ -5,6 +5,7 @@ class GradeSheet(models.Model):
     id = models.AutoField 
     reg_no = models.CharField(max_length=10, default="")
     name = models.CharField(max_length=50, default="")
-    session = models.CharField(max_length=8, default="")
-    courses = models.CharField(max_length=1000, default="")
-    obtained = models.CharField(max_length=1000, default="") 
+    institute = models.CharField(max_length=100, default="")
+    department = models.CharField(max_length=100, default="")
+    session = models.CharField(max_length=10, default="")
+    results = models.CharField(max_length=1000, default="")

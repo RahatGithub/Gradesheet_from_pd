@@ -6,13 +6,14 @@ from .models import GradeSheet
 import os
 import numpy as np
 import pandas as pd
+import json
 
-class Home(TemplateView):
-    template_name = 'home.html'
+# class Home(TemplateView):
+#     template_name = 'home.html'
 
 def upload(request):
     context = {}
-    semesters = []
+    # semesters = []
     if request.method == "POST":
         context['ok'] = True
         sem = 1
@@ -49,7 +50,7 @@ def upload(request):
         dic = {}
         for i in range(0, len(students)):
             if str(students[i]['regi']) not in dic:
-                print('nai')
+                # print('nai')
                 std = {}
                 std['name'] = str(students[i]['name'])
                 std['results'] = []
@@ -66,16 +67,51 @@ def upload(request):
                             nice.append(splited[3])
                             nice.append(splited[2])
                             nice.append(splited[4])
-                            print(nice)
                             one_sem.append(nice)
                         std['results'].append(one_sem)
                 dic[str(students[i]['regi'])] = std
-            else:
-                print('ache')
-        context['data'] = dic
-        # print(dic)
+
+        # context['data'] = dic
+        
+        institute = request.POST['institute']
+        department = request.POST['department']
+        session = request.POST['session']
+        for student,info in dic.items():
+            print(student, info, end="\n\n")
+            reg_no = student 
+            name = info['name']
+            results = json.dumps(info['results'])
+            GradeSheet.objects.create(reg_no=reg_no,
+                                      name=name,
+                                      institute=institute,
+                                      department=department,
+                                      session=session,
+                                      results=results )
+            
             
         return render(request, 'main/batch_view.html', {'data':dic})
-            
-    return render(request, 'main/upload.html', context)
+    
+    # Dividing the gradesheets into categories based on <institute, department, session>
+    gradesheet_category_obj = GradeSheet.objects.values('institute', 'department', 'session')
+    gradesheet_categories = list()
+    for gs_dict in gradesheet_category_obj:
+        li = [gs_dict['institute'], gs_dict['department'], gs_dict['session']]
+        if li not in gradesheet_categories:
+            gradesheet_categories.append(li)
+      
+    # prev_gs = []
+    # for gs_col in gradesheet_collection:
+    #     try:
+    #         gradesheets = GradeSheet.objects.filter(institute=gs_col[0], 
+    #                                     department=gs_col[1],
+    #                                     session=gs_col[2])
+    #         for gradesheet in gradesheets:
+    #             prev_gs.append(gradesheet)
+    #     except:
+    #         pass
+    
+    # for gs in prev_gs: print(gs)
 
+    # for gs_col in gradesheet_collection: print(gs_col)
+    
+    return render(request, 'main/upload.html', {'gradesheet_categories':gradesheet_categories})

@@ -59,18 +59,23 @@
         <div class="text-center d-flex justify-content-center">
             <h4 class="bg-secondary text-white w-25 m-3 px-2 py-4 border rounded">Previous Gradesheets:</h4>
         </div>
-        <div class="card border-primary m-3" style="max-width: 25rem;">
-            <div class="m-3 d-flex justify-content-end">
-                <a href="#"> <button class="btn btn-outline-info mr-2">View</button> </a>
-                <a href="#"> <button class="btn btn-outline-danger">Remove</button> </a>
+        {% for category in gradesheet_categories %}
+            <div class="card bg-light border-primary m-2 float-left" style="width:22rem; min-height:23rem;">
+                <div class="m-3 d-flex justify-content-end">
+                    <a href="#"> <button class="btn btn-outline-info mr-2">View</button> </a>
+                    <a href="#"> <button class="btn btn-outline-danger">Remove</button> </a>
+                </div>
+                <div class="card-body text-primary">
+                    <h5 class="text-dark">Institute: </h5>
+                    <h5 class="card-title">{{category.0}}</h5>
+                    <h5 class="text-dark">Department: </h5>
+                    <h5 class="card-title">{{category.1}}</h5>
+                    <h5 class="text-dark">Session: </h5>
+                    <h5 class="card-title">{{category.2}}</h5>
+                    <h6 class="card-text text-danger">Students: 58</h6>
+                </div>
             </div>
-            <div class="card-body text-primary text-center">
-                <h5 class="card-title">Sylhet Engineering College</h5>
-                <h5 class="card-title">Computer Science & Engineering</h5>
-                <h5 class="card-title">2018-19</h5>
-                <h6 class="card-text text-danger">Students: 58</h6>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 
 
