@@ -26,8 +26,8 @@
                     <td>{{student.0}}</td>
                     <td>{{student.1}}</td>
                     <td>
-                        <a href="/test/{{request.path|slice:"12:"}}{{student.0}}"><button class="btn btn-outline-primary mx-2">View</button></a>
-                        <a href="#"><button class="btn btn-primary mx-2">Download</button></a> 
+                        <a href="/gradesheet/{{request.path|slice:'12:'}}{{student.0}}"><button class="btn btn-outline-primary mx-2">View</button></a>
+                        <a href="/download_gradesheet/{{request.path|slice:'12:'}}{{student.0}}"><button class="btn btn-primary mx-2">Download</button></a>
                     </td>
                 </tr>
                 {% endfor %}

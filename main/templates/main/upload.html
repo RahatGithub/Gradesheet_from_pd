@@ -52,8 +52,6 @@
             <li class = 'btn' reg = "{{ i }}" style = "cursor:pointer, "> {{ i }}</li>
         {% endfor %}
     {% endif %}
-        
-    <p id="demo"></p>
 
     <div class="container">
         <div class="text-center d-flex justify-content-center">
@@ -62,7 +60,7 @@
         {% for category in gradesheet_categories %}
             <div class="card bg-light border rounded m-2 float-left" style="width:22rem; min-height:23rem;">
                 <div class="m-3 d-flex justify-content-end">
-                    <a href="#"> <button class="btn btn-outline-info mr-2">View</button> </a>
+                    <a href="batch_view/{{category.0}}/{{category.1}}/{{category.2}}"> <button class="btn btn-outline-info mr-2">View</button> </a>
                     <a href="#"> <button class="btn btn-outline-danger">Remove</button> </a>
                 </div>
                 <div class="card-body text-primary">
