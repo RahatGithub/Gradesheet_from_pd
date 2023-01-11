@@ -11,6 +11,7 @@
         <div class="d-flex justify-content-center">
             <form method = "post" enctype="multipart/form-data" class="w-50 bg-light border p-5 mx-5 d-flex justify-content-between align-items-center">
                 {% csrf_token %}
+                <input type="hidden" name="form_name" value="file_upload_form" id="file_upload_form">
                 <div class="">
                     <label for="institute">Institute: </label>
                     <select name="institute" id="institute">
@@ -61,7 +62,9 @@
             <div class="card bg-light border rounded m-2 float-left" style="width:22rem; min-height:23rem;">
                 <div class="m-3 d-flex justify-content-end">
                     <a href="batch_view/{{category.0}}/{{category.1}}/{{category.2}}"> <button class="btn btn-outline-info mr-2">View</button> </a>
-                    <a href="#"> <button class="btn btn-outline-danger">Remove</button> </a>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#DeleteRecordModal">Remove</button>
+                    {% comment %} <a href="delete_record/{{category.0}}/{{category.1}}/{{category.2}}"> <button class="btn btn-outline-danger">Remove</button> </a> {% endcomment %}
                 </div>
                 <div class="card-body text-primary">
                     <h6 class="text-dark">Institute: </h6>
@@ -71,6 +74,42 @@
                     <h6 class="text-dark">Session: </h6>
                     <h5 class="card-title">{{category.2}}</h5>
                     <h6 class="card-text text-danger">Students: {{category.3}}</h6>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="DeleteRecordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are you sure about deleting these records?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        By pressing <span class="text-danger"><b>DELETE</b></span> all grade sheets of this particular category will be erased.
+                        <br><br>
+                        <h6>Selected category: </h6>
+                        <ul class="list-group">
+                            <li class="list-group-item">Institute: <span><b>{{category.0}}</b></span></li>
+                            <li class="list-group-item">Department: <span><b>{{category.1}}</b></span></li>
+                            <li class="list-group-item">Session: <span><b>{{category.2}}</b></span></li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <a href="delete_record/{{category.0}}/{{category.1}}/{{category.2}}"><button type="button" class="btn btn-danger">Delete</button></a>
+                    <!-- <form action="" method="POST"> {% csrf_token %}
+                        <input type="hidden" name="form_name" value="delete_record_form" id="delete_record_form">
+                        <input type="hidden" name="institute" value={{category.0}}>
+                        <input type="hidden" name="department" value={{category.1}}>
+                        <input type="hidden" name="session" value={{category.2}}>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                        {% comment %} <a href="delete_record/{{category.0}}/{{category.1}}/{{category.2}}"><button type="submit" class="btn btn-danger">Delete</button></a> {% endcomment %}
+                    </form> -->
+                    </div>
+                </div>
                 </div>
             </div>
         {% endfor %}
