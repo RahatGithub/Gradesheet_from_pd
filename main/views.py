@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import TemplateView
 from django.core.files.storage import FileSystemStorage
 from django.core.files.storage import default_storage
@@ -112,17 +112,32 @@ def upload(request):
 
 
 def batch_view(request, institute, department, session):
+    if request.method == "POST":    
+        reg_no = request.POST['reg_no']
+        print(institute, department, session, reg_no)
+        try:
+            gradesheet = GradeSheet.objects.get(institute=institute, department=department, session=session, reg_no=reg_no)
+            gradesheet.status = True
+            gradesheet.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        except:
+            return HttpResponse("Not found")
+    
     students = []
     try:
         gradesheets = GradeSheet.objects.filter(institute=institute, department=department, session=session)
         for gs in gradesheets:
-            students.append([gs.reg_no, gs.name])
+            students.append([gs.reg_no, gs.name, gs.status])
     except:
         pass
         
     context = {'students':students, 'institute':institute, 'department':department, 'session':session}
     
     return render(request, 'main/batch_view.html', context)
+
+
+# def handover_gradesheet(request):
+    
 
 
 

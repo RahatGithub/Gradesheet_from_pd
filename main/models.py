@@ -9,3 +9,4 @@ class GradeSheet(models.Model):
     department = models.CharField(max_length=100, default="")
     session = models.CharField(max_length=10, default="")
     results = models.CharField(max_length=1000, default="")
+    status = models.BooleanField(default=False)

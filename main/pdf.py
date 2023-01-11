@@ -81,6 +81,10 @@ def download_pdf(request, institute, department, session, reg_no):
         department = department.replace("_", " ")  # replacing all '_' with <space>
         session = session.replace("_", " ")        # replacing all '_' with <space>
         student_record = GradeSheet.objects.get(institute=institute, department=department, session=session, reg_no=reg_no)
+        # ************experimental*********
+        student_record.status == True
+        student_record.save()
+        # *********************************
         results = json.loads(student_record.results)
         name = student_record.name
         

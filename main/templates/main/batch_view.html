@@ -2,7 +2,6 @@
 
 {% block title %} Batch view {% endblock %}
 
-{{request.path|slice:'12:'}}
 {% block body %}
     <div class="d-flex justify-content-center">
         <div class="bg-primary text-white border rounded mt-5 mb-2 p-5 text-center">    
@@ -12,12 +11,13 @@
         </div>
     </div>
     <div class="d-flex justify-content-center mb-5 p-5">
-        <table class="table table-hover table-secondary text-center">
+        <table class="table table-hover table-dark text-center">
             <thead>
               <tr>
                 <th scope="col">Registration No.</th>
                 <th scope="col">Name</th>
-                <th scope="col"></th>
+                <th scope="col">Action</th>
+                <th scope="col">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -28,30 +28,22 @@
                     <td>
                         <a href="/gradesheet/{{institute}}/{{department}}/{{session}}/{{student.0}}"><button class="btn btn-outline-primary mx-2">View</button></a>
                         <a href="/download_gradesheet/{{institute}}/{{department}}/{{session}}/{{student.0}}"><button id="download_btn_{{student.0}}" class="btn btn-primary mx-2 download_btn" onclick="print_msg(this.id)">Download</button></a>
-                        <span id="download_msg_{{student.0}}">xyz</span>
+                    </td>
+                    <td>
+                        {% if student.2 %}
+                        <span class="text-success"><b>Handed over</b></span>
+                        {% else %}
+                        <form action="" method="POST"> {% csrf_token %}
+                            <input type="hidden" name="reg_no" value={{student.0}}>
+                            <button type="submit" class="btn btn-warning">Hand over</button>
+                        </form>
+                        {% endif %} 
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-
-    {% block js %}
-    <script>
-        //const buttons = document.querySelector('.download_btn');
-
-        function print_msg(id){
-            const btn = document.getElementById(id)
-            //const msg_text_space = document.getElementById(id);
-            btn.innerText = "Downloaded";
-            btn.style.backgroundColor = "green";
-
-        }
-
-
-
-    </script>
-    {% endblock %}
 
 
 {% endblock %}
