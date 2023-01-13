@@ -60,7 +60,7 @@ def generate_pdf(request, institute, department, session, reg_no):
                    'reg_no' : reg_no,
                    'name' : name }
         
-        pdf = render_to_pdf('main/gradesheet_view.html', context)
+        pdf = render_to_pdf('main/dip_gradesheet.html')
         
         if pdf:
             response = HttpResponse(pdf, content_type="application/pdf")
@@ -71,7 +71,10 @@ def generate_pdf(request, institute, department, session, reg_no):
         return HttpResponse("Not found")
     
     except:
-        return HttpResponse("Not found") 
+        return HttpResponse("Not found...") 
+
+
+
 
 
 
@@ -122,7 +125,7 @@ def download_pdf(request, institute, department, session, reg_no):
                 'reg_no' : reg_no,
                 'name' : name }
         
-        pdf = render_to_pdf('main/gradesheet_view.html', context)
+        pdf = render_to_pdf('main/old_gradesheet.html', context)
         
         if pdf:
             response = HttpResponse(pdf, content_type="application/pdf")

@@ -9,8 +9,6 @@ import numpy as np
 import pandas as pd
 import json
 
-# class Home(TemplateView):
-#     template_name = 'home.html'
 
 def upload(request):
     context = {}
@@ -104,10 +102,11 @@ def upload(request):
         gradesheets = GradeSheet.objects.filter(institute=gs_dict['institute'], department=gs_dict['department'], session=gs_dict['session'])
         num_of_gs = len(gradesheets)
         li = [gs_dict['institute'], gs_dict['department'], gs_dict['session'], num_of_gs]        
-        if li not in gradesheet_categories:
+        if not li in gradesheet_categories:
             gradesheet_categories.append(li)
     
     return render(request, 'main/upload.html', {'gradesheet_categories':gradesheet_categories})
+
 
 
 
@@ -136,8 +135,16 @@ def batch_view(request, institute, department, session):
     return render(request, 'main/batch_view.html', context)
 
 
-# def handover_gradesheet(request):
+
+# def gradesheet_view(request, institute, department, session, reg_no):
     
+#     context = {'institute' : institute,
+#                'department' : department,
+#                'session' : session,
+#                'reg_no' : reg_no }
+#     return render(request, "main/gradesheet_view.html", context)
+
+
 
 
 
