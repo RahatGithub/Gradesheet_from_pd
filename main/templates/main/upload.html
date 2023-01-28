@@ -61,7 +61,7 @@
                 <div class="m-3 d-flex justify-content-end">
                     <a href="batch_view/{{category.0}}/{{category.1}}/{{category.2}}"> <button class="btn btn-outline-info mr-2">View</button> </a>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#DeleteRecordModal">Remove</button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#DeleteRecordModal{{category.2}}">Remove</button>
                 </div>
                 <div class="card-body text-primary">
                     <h6 class="text-dark">Institute: </h6>
@@ -75,7 +75,7 @@
             </div>
 
             <!-- Delete Confirmation Modal -->
-            <div class="modal fade" id="DeleteRecordModal" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+            <div class="modal fade" id="DeleteRecordModal{{category.2}}" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
