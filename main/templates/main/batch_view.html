@@ -26,8 +26,8 @@
                     <td>{{student.0}}</td>
                     <td>{{student.1}}</td>
                     <td>
-                        <a href="/gradesheet/{{institute}}/{{department}}/{{session}}/{{student.0}}"><button class="btn btn-outline-primary mx-2">View</button></a>
-                        {% comment %} <a href="/download_gradesheet/{{institute}}/{{department}}/{{session}}/{{student.0}}"><button id="download_btn_{{student.0}}" class="btn btn-primary mx-2 download_btn" onclick="print_msg(this.id)">Download</button></a> {% endcomment %}
+                        {% comment %} <a href="/gradesheet/{{institute}}/{{department}}/{{session}}/{{student.0}}"><button class="btn btn-outline-primary mx-2">View</button></a> {% endcomment %}
+                        <a href="/download_gradesheet/{{institute}}/{{department}}/{{session}}/{{student.0}}"><button id="download_btn_{{student.0}}" class="btn btn-primary mx-2 download_btn" onclick="print_msg(this.id)">Download</button></a>
                     </td>
                     <td>
                         {% if student.2 %}

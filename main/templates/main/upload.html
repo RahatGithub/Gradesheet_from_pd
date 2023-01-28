@@ -42,7 +42,7 @@
                     <p class="text-secondary">.</p>
                 </div>
                 <div>
-                    <input type="file" id="file_upload_input_btn" multiple name="document"/>
+                    <input type="file" id="file_upload_input_btn" multiple name="document" accept=".csv"/>
                     <button type="submit" id="upload_btn" class="btn btn-primary">Upload</button>
                     <br>
                     <!-- Button trigger modal -->
@@ -61,7 +61,7 @@
                 <div class="m-3 d-flex justify-content-end">
                     <a href="batch_view/{{category.0}}/{{category.1}}/{{category.2}}"> <button class="btn btn-outline-info mr-2">View</button> </a>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#DeleteRecordModal{{category.2}}">Remove</button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#DeleteRecordModal{{forloop.counter}}">Remove</button>
                 </div>
                 <div class="card-body text-primary">
                     <h6 class="text-dark">Institute: </h6>
@@ -75,11 +75,11 @@
             </div>
 
             <!-- Delete Confirmation Modal -->
-            <div class="modal fade" id="DeleteRecordModal{{category.2}}" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+            <div class="modal fade" id="DeleteRecordModal{{forloop.counter}}" tabindex="-1" aria-labelledby="DeleteRecordLabel{{forloop.counter}}" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel1">Are you sure about deleting these records?</h5>
+                        <h5 class="modal-title" id="DeleteRecordLabel{{forloop.counter}}">Are you sure about deleting these records?</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -140,6 +140,8 @@
             uploadBtn.disabled = false;
         }
 
+
+        //prevents form resubmission after page reload
         if ( window.history.replaceState ) {
             window.history.replaceState( null, null, window.location.href );
         }
