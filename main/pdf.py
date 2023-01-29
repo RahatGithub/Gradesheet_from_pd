@@ -54,13 +54,13 @@ def generate_pdf(request, institute, department, session, reg_no):
             a_semester['cumulative_LG'] = calculate_LG(cumulative_GP)
             
             gradesheet.append(a_semester)
-            
+
         context = {'gradesheet' : gradesheet, 
                    'session' : session,
                    'reg_no' : reg_no,
                    'name' : name }
         
-        pdf = render_to_pdf('main/dip_gradesheet.html')
+        pdf = render_to_pdf('main/old_gradesheet.html')
         
         if pdf:
             response = HttpResponse(pdf, content_type="application/pdf")
